@@ -19,13 +19,13 @@ _C.aux.exp = "dryrun"
 
 # dataset
 _C.dataset = "fsjump"
-_C.split = "split1"
+_C.split = ""
 _C.sr = 1 # temporal down-sample rate
 _C.eval_bg = False # if including background frame in evaluation
 
 # training
 _C.train = CN()
-_C.train.max_frames = 292
+_C.train.max_frames = 300
 _C.batch_size = 4
 _C.optimizer = "SGD"
 _C.epoch = 2
@@ -110,14 +110,14 @@ Loss.bgw = 1.0 # weight for background class
 Loss.nullw = -1 # weight for null class in action token; -1 -> auto-compute from statistic
 Loss.sw = 0.0 # weight for smoothing loss
 
-#########################
-# Data
-_C.data = CN()
-_C.data.train_list = "../data/fsjump/train.txt"
-_C.data.val_list = "../data/fsjump/val.txt"
-_C.data.test_list = "../data/fsjump/test.txt"
-_C.data.feature_dir = "../data/fsjump/features"
-_C.data.label_dir = "../data/fsjump/labels"
+# #########################
+# # Data
+# _C.data = CN()
+# _C.data.train_list = "CVPR2024-FACT/data/fsjump/train.txt"
+# _C.data.val_list = "CVPR2024-FACT/data/fsjump/val.txt"
+# _C.data.test_list = "CVPR2024-FACT/data/fsjump/test.txt"
+# _C.data.feature_dir = "CVPR2024-FACT/data/fsjump/features"
+# _C.data.label_dir = "CVPR2024-FACT/data/fsjump/labels"
 
 #########################
 # temporal masking

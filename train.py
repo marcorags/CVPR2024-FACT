@@ -98,7 +98,7 @@ if __name__ == '__main__':
         json.dump(cfg, f, indent=True)
 
     ### load dataset #########################################################
-    dataset, test_dataset = create_dataset(cfg)
+    dataset, test_dataset  = create_dataset(cfg)
     if not cfg.aux.debug:
         trainloader = DataLoader(dataset, batch_size=cfg.batch_size, shuffle=True)
     else:
@@ -108,12 +108,12 @@ if __name__ == '__main__':
     print('Test dataset ', test_dataset)
 
     ### create network #########################################################
-    if cfg.dataset == 'epic':
-        from .models.blocks_SepVerbNoun import FACT
-        net = FACT(cfg, dataset.input_dimension, 98, 301)
-    else:
-        from .models.blocks import FACT
-        net = FACT(cfg, dataset.input_dimension, dataset.nclasses)
+    # if cfg.dataset == 'epic':
+    #     from .models.blocks_SepVerbNoun import FACT
+    #     net = FACT(cfg, dataset.input_dimension, 98, 301)
+    # else:
+    from .models.blocks import FACT
+    net = FACT(cfg, dataset.input_dimension, dataset.nclasses)
 
     if cfg.Loss.nullw == -1:
         compute_null_weight(cfg, dataset)

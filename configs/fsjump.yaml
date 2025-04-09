@@ -1,36 +1,88 @@
 dataset: fsjump
-batch_size: 4
+batch_size: 1
 epoch: 10
 lr: 0.0005
-lr_decay: 5
+lr_decay: 250
 momentum: 0.9
 weight_decay: 0.0001
 clip_grad_norm: 1.0
 optimizer: Adam
+eval_bg: false
+sr: 4
 
+BU:
+  a: sa
+  a_dim: null
+  a_ffdim: null
+  a_layers: 1
+  a_nhead: 8
+  dropout: null
+  f: null
+  f_dim: null
+  f_layers: 10
+  f_ln: null
+  f_ngp: null
+  hid_dim: null
+  s_layers: 1
+Bi:
+  a: sca
+  a_dim: 256
+  a_ffdim: 512
+  a_layers: 6
+  a_nhead: 8
+  dropout: 0.0
+  f: m2
+  f_dim: 256
+  f_layers: 10
+  f_ln: false
+  f_ngp: 1
+  hid_dim: 512
+Bu:
+  a: sa
+  a_dim: null
+  a_ffdim: null
+  a_layers: 1
+  a_nhead: 8
+  dropout: null
+  f: null
+  f_dim: null
+  f_layers: 10
+  f_ln: null
+  f_ngp: null
+  hid_dim: null
+FACT:
+  block: iUUU
+  cmr: 0.3
+  fpos: false
+  ntoken: 200
+  trans: false
+  mwt: 0.9
 Loss:
   match: o2o
   nullw: -1  # Explicitly set as an integer
   bgw: 0.1
   a2fc: 1.0
   pc: 1.0
- 
+TM:
+  inplace: true
+  m: 5
+  p: 0.05
+  t: 30
+  use: false
 train:
-  max_frames: 292
-
-data:
-  train_list: ../data/fsjump/train.txt
-  val_list: ../data/fsjump/val.txt
-  test_list: ../data/fsjump/test.txt
-  feature_dir: ../data/fsjump/features
-  label_dir: ../data/fsjump/labels
-
+  max_frames: 300
+# data:
+#   train_list: CVPR2024-FACT/data/fsjump/train.txt
+#   val_list: CVPR2024-FACT/data/fsjump/val.txt
+#   test_list: CVPR2024-FACT/data/fsjump/test.txt
+#   feature_dir: CVPR2024-FACT/data/fsjump/features
+#   label_dir: CVPR2024-FACT/data/fsjump/labels
 aux:
   gpu: 0
   debug: true  # Set to false later for real training
   print_every: 5
   eval_every: 20
   wandb_project: fact-fsjump
-  wandb_user: edo  # wandb user
+  wandb_user: edomarco  # wandb user
   logdir: logs/fsjump/
   exp: dryrun
