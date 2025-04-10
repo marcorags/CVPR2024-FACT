@@ -84,5 +84,5 @@ aux:
   eval_every: 20
   wandb_project: fact-fsjump
   wandb_user: edomarco  # wandb user
-  logdir: logs/fsjump/
+  logdir: logs
   exp: dryrun

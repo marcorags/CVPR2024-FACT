@@ -14,7 +14,7 @@ _C.aux.wandb_offline = False
 _C.aux.resume = "max" # "", ckpt_path, "max" (resume latest ckpt of the experiment)
 _C.aux.eval_every = 1000
 _C.aux.print_every = 200
-_C.aux.logdir = "logs/fsjump/" # logdir
+_C.aux.logdir = "logs" # logdir
 _C.aux.exp = "dryrun"
 
 # dataset

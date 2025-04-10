@@ -138,7 +138,8 @@ class DataLoader():
 def create_dataset(cfg: CfgNode):
 
     if cfg.dataset == "fsjump":
-        dataset_path = Path(BASE) / 'CVPR2024-FACT' / 'data' / 'fsjump'
+        dataset_path = Path(BASE) / 'data' / 'fsjump'
+        # dataset_path = Path(BASE) / 'CVPR2024-FACT' / 'data' / 'fsjump'
         map_fname = dataset_path / 'mapping.txt'
         feature_path = dataset_path / 'features'
         train_split_fname = dataset_path / 'splits' / 'train.txt'
