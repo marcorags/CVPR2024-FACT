@@ -142,7 +142,9 @@ class Checkpoint():
         M['Acc'] = correct[fg_loc].mean() * 100 # accuracy without background frames
 
         # F1-Score
+        # overlap = [.1, .25, .5, .75, .9]
         overlap = [.1, .25, .5]
+        # overlap_size = len(overlap)
         tp, fp, fn = np.zeros(3), np.zeros(3), np.zeros(3)
 
         for gt, pred in zip(gt_list, pred_list):

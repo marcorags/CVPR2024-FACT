@@ -8,5 +8,6 @@ test.py
 ipynb
 old
 /data/*
-/log_test/*
 /log/*
+/log_test/*
+/logs/*

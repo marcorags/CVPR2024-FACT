@@ -79,10 +79,11 @@ train:
 #   label_dir: CVPR2024-FACT/data/fsjump/labels
 aux:
   gpu: 0
-  debug: true  # Set to false later for real training
+  debug: false  # Set to false later for real training
   print_every: 5
   eval_every: 20
   wandb_project: fact-fsjump
   wandb_user: edomarco  # wandb user
+  wandb_offline: true
   logdir: logs
   exp: dryrun

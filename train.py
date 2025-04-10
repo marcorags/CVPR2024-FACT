@@ -90,7 +90,8 @@ if __name__ == '__main__':
                 group=cfg.aux.exp, resume="allow",
                 config=cfg2flatdict(cfg),
                 reinit=True, save_code=False,
-                mode="offline" if cfg.aux.debug else "online",
+                # mode="offline" if cfg.aux.debug else "online",
+                mode="offline",
                 )
 
     argSaveFile = os.path.join(logdir, 'args.json')
