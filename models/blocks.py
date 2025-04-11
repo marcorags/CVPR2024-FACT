@@ -7,6 +7,8 @@ from ..configs.utils import update_from
 from . import loss
 from .loss import MatchCriterion
 from .basic import torch_class_label_to_segment_label, time_mask
+import os
+import numpy as np
 
 class FACT(nn.Module):
 
@@ -77,7 +79,15 @@ class FACT(nn.Module):
         for i, block in enumerate(self.block_list):
             frame_feature, action_feature = block(frame_feature, action_feature, frame_pe, action_pe)
             block_output.append([frame_feature, action_feature])
-        return block_output
+
+        # take last block
+        last_block = self.block_list[-1]
+        attn_maps = {   # attention maps
+            'a2f': last_block.a2f_attn.detach().cpu(), # frame to action token
+            'f2a': last_block.f2a_attn.detach().cpu(), # action token to frame
+        }
+
+        return block_output, attn_maps
 
     def _loss_one_video(self, label):
         mcriterion: MatchCriterion = self.mcriterion
@@ -105,13 +115,25 @@ class FACT(nn.Module):
         for i, (seq, label) in enumerate(zip(seq_list, label_list)):
             seq = seq.unsqueeze(1)
             trans = torch_class_label_to_segment_label(label)[0]
-            self._forward_one_video(seq, trans)
+            _, attn_maps = self._forward_one_video(seq, trans)
 
             pred = self.block_list[-1].eval(trans)
-            save_data = {'pred': utils.to_numpy(pred)}
+            save_data = {
+                'pred': utils.to_numpy(pred),
+                # 'a2f_attn': attn_maps['a2f'].numpy(),
+                # 'f2a_attn': attn_maps['f2a'].numpy(),
+                }
+            
             save_list.append(save_data)
 
             if compute_loss:
+                save_data['a2f_attn'] = attn_maps['a2f'].numpy()
+                save_data['f2a_attn'] = attn_maps['f2a'].numpy()
+
+                os.makedirs("attn", exist_ok=True)
+                np.save(f'CVPR2024-FACT/attn/a2f_attn_{i}.npy', save_data['a2f_attn'])
+                np.save(f'CVPR2024-FACT/attn/f2a_attn_{i}.npy', save_data['f2a_attn'])
+
                 loss = self._loss_one_video(label)
                 final_loss.append(loss)
                 save_data['loss'] = { 'loss': loss.item() }
