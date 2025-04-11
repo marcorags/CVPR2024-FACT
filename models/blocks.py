@@ -129,7 +129,7 @@ class FACT(nn.Module):
                 save_data['a2f_attn'] = attn_maps['a2f'].numpy()
                 save_data['f2a_attn'] = attn_maps['f2a'].numpy()
 
-                os.makedirs("attn", exist_ok=True)
+                os.makedirs("CVPR2024-FACT/attn", exist_ok=True)
                 np.save(f'CVPR2024-FACT/attn/a2f_attn_{i}.npy', save_data['a2f_attn'])
                 np.save(f'CVPR2024-FACT/attn/f2a_attn_{i}.npy', save_data['f2a_attn'])
 
