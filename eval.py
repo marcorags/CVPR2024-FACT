@@ -38,7 +38,7 @@ for dataset_name, n_splits in [
         for vname, batch_seq, train_label_list, eval_label in tqdm(loader):
             seq_list = [ s.cuda() for s in batch_seq ]
             train_label_list = [ s.cuda() for s in train_label_list ]
-            video_saves = model(seq_list, train_label_list)
+            video_saves = model(seq_list, train_label_list, compute_loss=False)
             save_results(ckpt, vname, eval_label, video_saves)
 
         ckpt.compute_metrics()

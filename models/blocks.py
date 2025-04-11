@@ -124,9 +124,8 @@ class FACT(nn.Module):
                 # 'f2a_attn': attn_maps['f2a'].numpy(),
                 }
             
-            save_list.append(save_data)
 
-            if compute_loss:
+            if not compute_loss:
                 save_data['a2f_attn'] = attn_maps['a2f'].numpy()
                 save_data['f2a_attn'] = attn_maps['f2a'].numpy()
 
@@ -134,11 +133,13 @@ class FACT(nn.Module):
                 np.save(f'CVPR2024-FACT/attn/a2f_attn_{i}.npy', save_data['a2f_attn'])
                 np.save(f'CVPR2024-FACT/attn/f2a_attn_{i}.npy', save_data['f2a_attn'])
 
+            save_list.append(save_data)
+
+            if compute_loss:        
                 loss = self._loss_one_video(label)
                 final_loss.append(loss)
                 save_data['loss'] = { 'loss': loss.item() }
-
-
+                
         if compute_loss:
             final_loss = sum(final_loss) / len(final_loss)
             return final_loss, save_list
