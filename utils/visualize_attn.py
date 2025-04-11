@@ -3,27 +3,46 @@ import seaborn as sns
 import matplotlib.pyplot as plt
 import os
 
-# Specifica il percorso del file che vuoi visualizzare
-file_path = 'CVPR2024-FACT/attn/a2f_attn_0.npy'  # cambia il nome se necessario
+# Choose which attention map to visualize ('a2f' or 'f2a')
+attention_type = 'a2f'  # Change to 'f2a' for frame-to-action attention
+# attention_type = 'f2a'  # Change to 'a2f' for action-to-frame attention
 
-# Controlla che il file esista
+
+# File path construction
+file_path = f'CVPR2024-FACT/attn/{attention_type}_attn_0.npy'
+
+# Check if file exists
 if not os.path.exists(file_path):
-    print(f"Errore: il file '{file_path}' non esiste.")
+    print(f"Error: File '{file_path}' does not exist.")
 else:
-    # Carica la mappa di attenzione
+    # Load attention map
     attn = np.load(file_path)
 
-    # Verifica che sia una matrice 2D
-    if len(attn.shape) != 2:
-        print(f"Errore: il file contiene un array con {attn.ndim} dimensioni invece di 2.")
-    else:
-        print(f"Caricata mappa con shape {attn.shape} (T x M)")
+    # Handle batch dimension (1, T, M)
+    if attn.ndim == 3 and attn.shape[0] == 1:
+        attn = attn[0]  # becomes (T, M)
+    elif attn.ndim != 2:
+        print(f"Error: Array has shape {attn.shape}, expected 2D or 3D with batch size 1.")
+        exit()
 
-        # Visualizzazione con heatmap
-        plt.figure(figsize=(10, 4))
-        sns.heatmap(attn.T, cmap="viridis", cbar=True)
-        plt.xlabel("Frame Index")
-        plt.ylabel("Token Index")
-        plt.title("Frame-to-Token Attention Map (Λf)")
-        plt.tight_layout()
-        plt.show()
+    print(f"Loaded attention map with shape {attn.shape} (T x M)")
+
+    # Plot heatmap
+    plt.figure(figsize=(12, 5))
+    
+    # Determine titles and labels based on attention type
+    if attention_type == 'a2f':
+        title = "Action-to-Frame Attention Map (Λᶠ)"
+        ylabel = "Token Index"
+        xlabel = "Frame Index"
+    else:
+        title = "Frame-to-Action Attention Map (Λᵃ)"
+        ylabel = "Frame Index"
+        xlabel = "Token Index"
+
+    sns.heatmap(attn.T, cmap="viridis", cbar=True)
+    plt.xlabel(xlabel)
+    plt.ylabel(ylabel)
+    plt.title(title)
+    plt.tight_layout()
+    plt.show()

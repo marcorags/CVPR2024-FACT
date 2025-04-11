@@ -54,7 +54,7 @@ FACT:
   block: iUUU
   cmr: 0.3
   fpos: false
-  ntoken: 200
+  ntoken: 10
   trans: false
   mwt: 0.9
 Loss:

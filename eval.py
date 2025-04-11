@@ -23,7 +23,7 @@ for dataset_name, n_splits in [
         from .models.blocks import FACT 
         model = FACT(cfg, dataset.input_dimension, dataset.nclasses)
 
-        weights = f'./CVPR2024-FACT/log/{dataset_name}/{dataset_name}/0/ckpts/network.iter-900.net'
+        weights = f'./CVPR2024-FACT/log/{dataset_name}/{dataset_name}/0/ckpts/network.iter-100.net'
         # weights = f'/home/disi/siv/SIV_UniTN_TAS_project/log/fsjump/fsjump/0/best_ckpt.gz'
         # weights = f'./ckpts/{dataset_name}/split{split}-weight.pth'
         weights = torch.load(weights, map_location='cpu')
