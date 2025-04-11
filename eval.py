@@ -19,14 +19,26 @@ for dataset_name, n_splits in [
         cfg.split = f"split{split}"
         dataset, test_dataset = create_dataset(cfg)
 
-        
+        # FACT Model
         from .models.blocks import FACT 
         model = FACT(cfg, dataset.input_dimension, dataset.nclasses)
 
-        weights = f'./CVPR2024-FACT/log/{dataset_name}/{dataset_name}/0/ckpts/network.iter-100.net'
+        # Find the path of the best checkpoint
+        best_ckpt_path = f'./CVPR2024-FACT/log/{dataset_name}/{dataset_name}/0/best_ckpt.gz'
+        best_ckpt = Checkpoint.load(best_ckpt_path)
+
+        # Load weights from the .net file corresponding to the best iteration
+        weights_path = f'./CVPR2024-FACT/log/{dataset_name}/{dataset_name}/0/ckpts/network.iter-{best_ckpt.iteration}.net'
+        weights = torch.load(weights_path, map_location='cpu')
+        
+        # best_ckpt_path = f'./CVPR2024-FACT/log/{dataset_name}/{dataset_name}/0/best_ckpt.gz'
+        # best_ckpt = Checkpoint.load(best_ckpt_path)  # Load entire checkpoint
+        # print("best_ckpt --> ", best_ckpt)
+        # weights = best_ckpt.videos
+
         # weights = f'/home/disi/siv/SIV_UniTN_TAS_project/log/fsjump/fsjump/0/best_ckpt.gz'
         # weights = f'./ckpts/{dataset_name}/split{split}-weight.pth'
-        weights = torch.load(weights, map_location='cpu')
+        # weights = torch.load(weights, map_location='cpu')
         if 'frame_pe.pe' in weights:
             del weights['frame_pe.pe']
         model.load_state_dict(weights, strict=False)
